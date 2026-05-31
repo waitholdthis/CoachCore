@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+sqlalchemy[asyncio]==2.0.*
+asyncpg
+alembic
+psycopg2-binary
+pydantic[email]>=2.0
+pydantic-settings
+python-jose[cryptography]
+bcrypt>=4.0.0
+python-multipart
+boto3
+better-profanity
+icalendar
+python-dateutil
+Pillow

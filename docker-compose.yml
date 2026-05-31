@@ -1,6 +1,7 @@
 version: "3.9"
 
 services:
+  # ── Shared infrastructure ─────────────────────────────
   db:
     image: pgvector/pgvector:pg16
     container_name: coachcore_db
@@ -12,12 +13,32 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-season-db.sql:/docker-entrypoint-initdb.d/01_season.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U coachcore -d coachcore"]
       interval: 5s
       timeout: 5s
       retries: 10
 
+  minio:
+    image: minio/minio:latest
+    container_name: season_minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── CoachCore ─────────────────────────────────────────
   api:
     build:
       context: ./api
@@ -28,14 +49,14 @@ services:
       DATABASE_URL: postgresql+asyncpg://coachcore:coachcore@db:5432/coachcore
       DATABASE_URL_SYNC: postgresql://coachcore:coachcore@db:5432/coachcore
     ports:
-      - "8000:8000"
+      - "8001:8001"
     volumes:
       - ./api:/app
       - uploads_data:/app/uploads
     depends_on:
       db:
         condition: service_healthy
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
 
   web:
     build:
@@ -44,9 +65,9 @@ services:
     container_name: coachcore_web
     env_file: .env
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_API_URL: http://localhost:8001
     ports:
-      - "3000:3000"
+      - "3001:3001"
     volumes:
       - ./apps/web:/app
       - /app/node_modules
@@ -55,6 +76,45 @@ services:
       - api
     command: npm run dev
 
+  # ── The Season ────────────────────────────────────────
+  season-api:
+    build:
+      context: ./season-api
+      dockerfile: Dockerfile
+    container_name: season_api
+    env_file: .env
+    environment:
+      SEASON_DATABASE_URL: postgresql+asyncpg://season:season@db:5432/the_season
+      SEASON_DATABASE_URL_SYNC: postgresql://season:season@db:5432/the_season
+      MINIO_ENDPOINT: minio:9000
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./season-api:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    command: uvicorn main:app --host 0.0.0.0 --port 8002 --reload
+
+  season-web:
+    build:
+      context: ./apps/season
+      dockerfile: Dockerfile
+    container_name: season_web
+    env_file: .env
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./apps/season:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - season-api
+    command: npm run dev
+
 volumes:
   postgres_data:
   uploads_data:
+  minio_data:

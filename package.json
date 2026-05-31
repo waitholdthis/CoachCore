@@ -2,7 +2,7 @@
   "name": "coachcore",
   "version": "0.1.0",
   "private": true,
-  "workspaces": ["apps/*"],
+  "workspaces": ["apps/*", "apps/season"],
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
