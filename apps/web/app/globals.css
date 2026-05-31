@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+    font-family: Inter, system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  .safety-banner {
+    @apply bg-safety-50 border border-safety-500 text-safety-700 rounded-lg px-4 py-3 text-sm flex items-start gap-2;
+  }
+
+  .conflict-banner {
+    @apply bg-conflict-50 border border-conflict-500 text-conflict-700 rounded-lg px-4 py-3 text-sm flex items-start gap-2;
+  }
+
+  .rule-card {
+    @apply bg-white rounded-xl border border-slate-200 p-4 shadow-sm hover:shadow-md transition-shadow;
+  }
+
+  .tier-1-slot {
+    @apply bg-brand-50 border-2 border-brand-200 rounded-xl p-4 flex flex-col gap-1;
+  }
+
+  .diff-card {
+    @apply border-l-4 rounded-r-xl p-4 bg-white shadow-sm;
+  }
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { @apply bg-slate-100; }
+::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full; }
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  @apply rounded;
+}

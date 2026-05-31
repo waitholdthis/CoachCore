@@ -1,0 +1,60 @@
+version: "3.9"
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: coachcore_db
+    environment:
+      POSTGRES_USER: coachcore
+      POSTGRES_PASSWORD: coachcore
+      POSTGRES_DB: coachcore
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coachcore -d coachcore"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: coachcore_api
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://coachcore:coachcore@db:5432/coachcore
+      DATABASE_URL_SYNC: postgresql://coachcore:coachcore@db:5432/coachcore
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/app
+      - uploads_data:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: coachcore_web
+    env_file: .env
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./apps/web:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - api
+    command: npm run dev
+
+volumes:
+  postgres_data:
+  uploads_data:
