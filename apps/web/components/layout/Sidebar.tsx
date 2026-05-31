@@ -2,7 +2,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, Users, Upload, Zap, GitCompare, MessageSquare, Settings,
+  LayoutDashboard, Users, GitCompare, MessageSquare,
+  Dumbbell, Activity, Map,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +12,12 @@ const navItems = [
   { href: "/dashboard/leagues", label: "My Leagues", icon: Users },
   { href: "/dashboard/chat", label: "Rule Check", icon: MessageSquare },
   { href: "/dashboard/diff", label: "Rule Diff", icon: GitCompare },
+];
+
+const coachingItems = [
+  { href: "/dashboard/practice", label: "Practice Builder", icon: Dumbbell },
+  { href: "/dashboard/conditioning", label: "S&C Engine", icon: Activity },
+  { href: "/dashboard/gameplan", label: "Tactical Board", icon: Map },
 ];
 
 export function Sidebar() {
@@ -39,6 +46,26 @@ export function Sidebar() {
             className={cn(
               "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
               isActive(item.href, item.exact)
+                ? "bg-brand-50 text-brand-700"
+                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+            )}
+          >
+            <item.icon size={18} />
+            {item.label}
+          </Link>
+        ))}
+
+        <div className="pt-4 pb-1">
+          <p className="text-xs text-slate-400 uppercase tracking-wider font-medium px-3">Coaching</p>
+        </div>
+
+        {coachingItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={cn(
+              "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+              isActive(item.href)
                 ? "bg-brand-50 text-brand-700"
                 : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
             )}

@@ -188,3 +188,127 @@ export interface RuleDiff {
   safety_critical_differences: number;
   generated_at: string;
 }
+
+// ── Coaching Suite ────────────────────────────────────────────────────────────
+
+export interface PracticePlanGenerate {
+  sport: string;
+  age_bracket: string;
+  focus_area: string;
+  duration_minutes?: number;
+  division_type?: string | null;
+  league_id?: string | null;
+  additional_context?: string | null;
+}
+
+export interface PracticeActivity {
+  name: string;
+  duration_minutes: number;
+  description: string;
+  setup: string;
+  coaching_points: string[];
+  progressions: string[];
+  equipment: string[];
+  intensity: "low" | "medium" | "high";
+  ltad_component: string;
+  player_count: string;
+}
+
+export interface PracticePhase {
+  name: string;
+  duration_minutes: number;
+  color: "amber" | "blue" | "green" | "purple" | "slate";
+  activities: PracticeActivity[];
+}
+
+export interface PracticePlan {
+  id: string;
+  sport: string;
+  age_bracket: string;
+  division_type: string | null;
+  league_id: string | null;
+  title: string;
+  overview: string;
+  focus_area: string;
+  duration_minutes: number;
+  phases: PracticePhase[];
+  equipment_list: string[];
+  safety_notes: string[];
+  coaching_cues: string[];
+  generation_params: Record<string, unknown> | null;
+  created_at: string;
+}
+
+export interface LTADStageInfo {
+  stage_name: string;
+  focus: string;
+  key_components: string[];
+  prohibited: string[];
+  sc_guidelines: string;
+  max_session_minutes: number;
+  max_sessions_per_week: number;
+  intensity_ceiling: string;
+  notes: string;
+  sport_constraints: string[];
+}
+
+export interface SCProgramGenerate {
+  sport: string;
+  age_bracket: string;
+  season_phase?: string;
+  weeks?: number;
+  days_per_week?: number;
+  league_id?: string | null;
+  goals?: string | null;
+}
+
+export interface MacrocycleWeek {
+  week: number;
+  phase: string;
+  sessions: Array<{
+    day: number;
+    focus: string;
+    exercises: Array<{ name: string; sets: number; reps: string; notes?: string }>;
+  }>;
+}
+
+export interface SCProgram {
+  id: string;
+  sport: string;
+  age_bracket: string;
+  ltad_stage: string;
+  season_phase: string;
+  weeks: number;
+  days_per_week: number;
+  title: string;
+  overview: string;
+  safety_constraints: string[];
+  macrocycle: MacrocycleWeek[];
+  generation_params: Record<string, unknown> | null;
+  created_at: string;
+}
+
+export interface FieldPosition {
+  id: string;
+  player_name: string;
+  number?: number;
+  x: number;
+  y: number;
+  position_label: string;
+}
+
+export interface GamePlan {
+  id: string;
+  sport: string;
+  age_bracket: string;
+  league_id: string | null;
+  title: string;
+  opponent_name: string | null;
+  formation: string | null;
+  field_positions: FieldPosition[];
+  tactical_notes: string | null;
+  set_pieces: string[];
+  key_rules_context: unknown[];
+  created_at: string;
+  updated_at: string;
+}

@@ -3,6 +3,9 @@ import type {
   League, RuleUpload, ActiveRule, QuickRefCard,
   ConflictRecord, ConflictSummary, ChatResponse, RuleDiff,
   Sport,
+  PracticePlan, PracticePlanGenerate, LTADStageInfo,
+  SCProgram, SCProgramGenerate,
+  GamePlan,
 } from "./types";
 
 const api = axios.create({
@@ -105,4 +108,35 @@ export const diffApi = {
     away: { sport: string; age_bracket: string; division_type?: string; league_id?: string; label: string };
   }) =>
     api.post<RuleDiff>("/diff", payload).then(r => r.data),
+};
+
+// ── Practice Plans ────────────────────────────────────────────────────────────
+
+export const practiceApi = {
+  list: () => api.get<PracticePlan[]>("/practice").then(r => r.data),
+  get: (id: string) => api.get<PracticePlan>(`/practice/${id}`).then(r => r.data),
+  generate: (payload: PracticePlanGenerate) => api.post<PracticePlan>("/practice/generate", payload).then(r => r.data),
+  ltad: (age_bracket: string) => api.get<LTADStageInfo>(`/practice/ltad/${age_bracket}`).then(r => r.data),
+  delete: (id: string) => api.delete(`/practice/${id}`),
+};
+
+// ── S&C Programs ──────────────────────────────────────────────────────────────
+
+export const conditioningApi = {
+  list: () => api.get<SCProgram[]>("/conditioning").then(r => r.data),
+  get: (id: string) => api.get<SCProgram>(`/conditioning/${id}`).then(r => r.data),
+  generate: (payload: SCProgramGenerate) => api.post<SCProgram>("/conditioning/generate", payload).then(r => r.data),
+  delete: (id: string) => api.delete(`/conditioning/${id}`),
+};
+
+// ── Game Plans ────────────────────────────────────────────────────────────────
+
+export const gameplanApi = {
+  list: () => api.get<GamePlan[]>("/gameplan").then(r => r.data),
+  get: (id: string) => api.get<GamePlan>(`/gameplan/${id}`).then(r => r.data),
+  create: (payload: Omit<GamePlan, "id" | "created_at" | "updated_at" | "key_rules_context">) =>
+    api.post<GamePlan>("/gameplan", payload).then(r => r.data),
+  update: (id: string, payload: Partial<Omit<GamePlan, "id" | "created_at" | "updated_at" | "key_rules_context">>) =>
+    api.patch<GamePlan>(`/gameplan/${id}`, payload).then(r => r.data),
+  delete: (id: string) => api.delete(`/gameplan/${id}`),
 };

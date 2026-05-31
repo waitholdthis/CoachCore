@@ -37,12 +37,18 @@ if settings.environment == "development":
 
 # Routers
 from routers import leagues, rules, ingest, chat, diff  # noqa: E402
+from routers.practice import router as practice_router  # noqa: E402
+from routers.conditioning import router as conditioning_router  # noqa: E402
+from routers.gameplan import router as gameplan_router  # noqa: E402
 
 app.include_router(leagues.router, prefix="/api/leagues", tags=["leagues"])
 app.include_router(rules.router, prefix="/api/rules", tags=["rules"])
 app.include_router(ingest.router, prefix="/api/ingest", tags=["ingest"])
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(diff.router, prefix="/api/diff", tags=["diff"])
+app.include_router(practice_router)
+app.include_router(conditioning_router)
+app.include_router(gameplan_router)
 
 
 @app.get("/api/health")
