@@ -18,34 +18,23 @@ def upgrade() -> None:
     op.execute("CREATE EXTENSION IF NOT EXISTS vector")
     op.execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
 
-    # Enums
-    sport_enum = postgresql.ENUM(
-        "soccer", "baseball", "basketball", "football",
-        name="sport", create_type=True
-    )
-    rule_tier_enum = postgresql.ENUM(
-        "baseline", "governing_body", "local", "tournament",
-        name="ruletier", create_type=True
-    )
-    rule_type_enum = postgresql.ENUM(
-        "boolean", "numeric", "enumerated", "prose",
-        name="ruletype", create_type=True
-    )
-    conflict_type_enum = postgresql.ENUM(
-        "OVERRIDE", "RESTRICT", "EXPAND", "SUPPLEMENT", "CONFLICT",
-        name="conflicttype", create_type=True
-    )
-    conflict_resolution_enum = postgresql.ENUM(
-        "LOCAL_OVERRIDES", "BASELINE_APPLIES", "PENDING_REVIEW",
-        name="conflictresolution", create_type=True
-    )
-    ingestion_status_enum = postgresql.ENUM(
-        "pending", "processing", "completed", "failed", "partial",
-        name="ingestionstatus", create_type=True
-    )
-    for e in [sport_enum, rule_tier_enum, rule_type_enum, conflict_type_enum,
-              conflict_resolution_enum, ingestion_status_enum]:
-        e.create(op.get_bind(), checkfirst=True)
+    def create_enum_safe(name: str, values: str) -> None:
+        op.execute(f"DO $$ BEGIN CREATE TYPE {name} AS ENUM ({values}); EXCEPTION WHEN duplicate_object THEN null; END $$;")
+
+    create_enum_safe("sport", "'soccer', 'baseball', 'basketball', 'football'")
+    create_enum_safe("ruletier", "'baseline', 'governing_body', 'local', 'tournament'")
+    create_enum_safe("ruletype", "'boolean', 'numeric', 'enumerated', 'prose'")
+    create_enum_safe("conflicttype", "'OVERRIDE', 'RESTRICT', 'EXPAND', 'SUPPLEMENT', 'CONFLICT'")
+    create_enum_safe("conflictresolution", "'LOCAL_OVERRIDES', 'BASELINE_APPLIES', 'PENDING_REVIEW'")
+    create_enum_safe("ingestionstatus", "'pending', 'processing', 'completed', 'failed', 'partial'")
+
+    # Column-level references only (create_type=False — types already created above)
+    sport_enum = postgresql.ENUM("soccer", "baseball", "basketball", "football", name="sport", create_type=False)
+    rule_tier_enum = postgresql.ENUM("baseline", "governing_body", "local", "tournament", name="ruletier", create_type=False)
+    rule_type_enum = postgresql.ENUM("boolean", "numeric", "enumerated", "prose", name="ruletype", create_type=False)
+    conflict_type_enum = postgresql.ENUM("OVERRIDE", "RESTRICT", "EXPAND", "SUPPLEMENT", "CONFLICT", name="conflicttype", create_type=False)
+    conflict_resolution_enum = postgresql.ENUM("LOCAL_OVERRIDES", "BASELINE_APPLIES", "PENDING_REVIEW", name="conflictresolution", create_type=False)
+    ingestion_status_enum = postgresql.ENUM("pending", "processing", "completed", "failed", "partial", name="ingestionstatus", create_type=False)
 
     # leagues
     op.create_table(
@@ -115,7 +104,7 @@ def upgrade() -> None:
         sa.Column("upload_id", postgresql.UUID(as_uuid=True), sa.ForeignKey("rule_uploads.id"), nullable=True),
         sa.Column("source_page", sa.Integer(), nullable=True),
         sa.Column("source_paragraph", sa.String(50), nullable=True),
-        sa.Column("embedding", sa.Column("embedding", sa.Text())),  # placeholder; vector type added below
+        sa.Column("embedding", sa.Text()),  # placeholder; replaced with vector(1536) below
         sa.Column("tags", postgresql.ARRAY(sa.String()), nullable=False, server_default="{}"),
         sa.Column("related_rule_ids", postgresql.ARRAY(postgresql.UUID(as_uuid=True)), nullable=False, server_default="{}"),
         sa.Column("normative_certainty", sa.Float(), nullable=True),
