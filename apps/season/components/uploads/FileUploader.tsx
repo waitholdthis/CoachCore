@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import { useDropzone, type FileRejection } from "react-dropzone";
 import { Upload, X, FileText, Image, Film } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatFileSize } from "@/lib/utils";
@@ -23,7 +23,7 @@ export default function FileUploader({
   const [uploading, setUploading] = useState(false);
 
   const onDrop = useCallback(
-    (acceptedFiles: File[], rejectedFiles: { errors: { code: string }[] }[]) => {
+    (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       setError(null);
       if (rejectedFiles.length > 0) {
         const err = rejectedFiles[0].errors[0];

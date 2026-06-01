@@ -2,7 +2,8 @@
   "name": "coachcore",
   "version": "0.1.0",
   "private": true,
-  "workspaces": ["apps/*", "apps/season"],
+  "packageManager": "npm@10.9.8",
+  "workspaces": ["apps/*"],
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",

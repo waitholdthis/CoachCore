@@ -144,7 +144,7 @@ export default function LeaguePage({ params }: { params: Promise<{ id: string }>
   );
 }
 
-function UploadRow({ upload }: { upload: ReturnType<typeof leaguesApi.uploads> extends Promise<infer T> ? T[0] : never }) {
+function UploadRow({ upload }: { upload: import("@/lib/types").RuleUpload }) {
   const statusConfig = {
     pending: { color: "text-slate-500", icon: Clock, label: "Pending" },
     processing: { color: "text-brand-600", icon: Clock, label: "Processing..." },
