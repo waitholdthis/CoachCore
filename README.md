@@ -1,5 +1,7 @@
 # The Season
 
+[![Product CI](https://github.com/waitholdthis/CoachCore/actions/workflows/product-ci.yml/badge.svg)](https://github.com/waitholdthis/CoachCore/actions/workflows/product-ci.yml)
+
 The Season is a team operations app for youth sports coaches, volunteer parent-coaches, players, and families. It gives a team one place for messages, schedules, RSVPs, file uploads, invite links, and team membership management.
 
 This repository currently contains two related products:

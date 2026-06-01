@@ -1,0 +1,52 @@
+name: Product CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: product-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify The Season + CoachCore
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Type-check web workspaces
+        run: npm run type-check
+
+      - name: Build web workspaces
+        run: npm run build
+
+      - name: Compile Python APIs
+        run: python3 -m compileall -q season-api api
+
+      - name: Validate The Season demo seed plan
+        working-directory: season-api
+        run: python3 scripts/seed_demo.py --dry-run
+
+      - name: Dependency audit report
+        continue-on-error: true
+        run: npm audit --omit=dev
