@@ -60,6 +60,37 @@ npm run dev --workspace the-season-web
 
 The Season proxies `/api/*` and `/ws/*` to `SEASON_API_INTERNAL_URL`, defaulting to `http://localhost:8002`.
 
+## Demo data
+
+The Season includes an idempotent Falcons U10 demo seed for local or staging screenshots, walkthroughs, and sales/showcase demos.
+
+Preview the seed plan without database access:
+
+```bash
+cd season-api
+python3 scripts/seed_demo.py --dry-run
+```
+
+After the database has been migrated and `SEASON_DATABASE_URL` points at the target environment, seed the demo:
+
+```bash
+cd season-api
+SEASON_DEMO_PASSWORD="change-this-local-demo-password" python3 scripts/seed_demo.py
+```
+
+The seed creates:
+
+- Demo coach account: `demo-coach@theseason.local`
+- Team: `Falcons U10`
+- Invite code: `FALCONU10`
+- Parent/member records, including one pending member
+- Team chat and announcement channels
+- Game-week messages
+- Practice/game/reminder events
+- RSVPs and file records for screenshot-ready product states
+
+Use a non-production password and do not enable demo credentials in a real public production environment.
+
 ## Verification
 
 Run type checks for both frontend apps:
@@ -88,7 +119,7 @@ Before publishing The Season:
 2. Set `CORS_ORIGINS` to the production web origin.
 3. Set `SEASON_API_INTERNAL_URL` to the production internal API URL used by the Next.js server.
 4. Use managed Postgres and S3-compatible object storage for production.
-5. Add privacy policy and terms pages before inviting real parents or collecting youth/player information.
+5. Review the draft privacy policy and terms with qualified counsel before inviting real parents or collecting youth/player information.
 6. Add rate limiting, email verification, password reset, and notification delivery before public launch.
 
 ## Product direction

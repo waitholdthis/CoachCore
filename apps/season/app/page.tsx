@@ -168,7 +168,7 @@ export default function LandingPage() {
                         <Trophy className="h-5 w-5" />
                         <p className="text-sm font-black">Game-day mode</p>
                       </div>
-                      <p className="mt-2 text-xs leading-5 text-slate-600">The next sprint will turn this into a real demo flow with seeded team data and zero-friction preview access.</p>
+                      <p className="mt-2 text-xs leading-5 text-slate-600">The backend now includes a Falcons U10 seed script so this preview can become a real staging demo with believable messages, RSVPs, events, and files.</p>
                     </div>
                   </div>
                 </div>

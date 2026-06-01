@@ -93,7 +93,7 @@ export default function DemoPage() {
               ))}
             </div>
             <div className="mt-5 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm font-semibold text-slate-500">
-              Demo note: next sprint will wire this preview to seeded backend data or a safe demo account.
+              Demo note: this static preview now matches the Falcons U10 backend seed data used for staging walkthroughs and screenshot-ready product demos.
             </div>
           </section>
 
