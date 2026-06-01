@@ -2,29 +2,75 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, Users, GitCompare, MessageSquare,
-  Dumbbell, Activity, Map,
+  LayoutDashboard,
+  Calendar,
+  Dumbbell,
+  BookOpen,
+  BarChart2,
+  Map,
+  Users,
+  TrendingUp,
+  Activity,
+  Lightbulb,
+  Bookmark,
+  MessageSquare,
+  GitCompare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { href: "/dashboard/leagues", label: "My Leagues", icon: Users },
-  { href: "/dashboard/chat", label: "Rule Check", icon: MessageSquare },
-  { href: "/dashboard/diff", label: "Rule Diff", icon: GitCompare },
+const planningItems = [
+  { href: "/dashboard/calendar", label: "Practice Calendar", icon: Calendar },
+  { href: "/dashboard/practice", label: "Practice Builder", icon: Dumbbell },
+  { href: "/dashboard/drills", label: "Drill Library", icon: BookOpen },
+  { href: "/dashboard/seasons", label: "Season Planning", icon: BarChart2 },
+  { href: "/dashboard/gameplan", label: "Tactical Board", icon: Map },
 ];
 
-const coachingItems = [
-  { href: "/dashboard/practice", label: "Practice Builder", icon: Dumbbell },
+const teamItems = [
+  { href: "/dashboard/team", label: "Team Management", icon: Users },
+  { href: "/dashboard/performance", label: "Performance", icon: TrendingUp },
   { href: "/dashboard/conditioning", label: "S&C Engine", icon: Activity },
-  { href: "/dashboard/gameplan", label: "Tactical Board", icon: Map },
+];
+
+const resourceItems = [
+  { href: "/dashboard/resources", label: "Motivational Hub", icon: Lightbulb },
+  { href: "/dashboard/saved", label: "Saved Resources", icon: Bookmark },
+  { href: "/dashboard/leagues", label: "My Leagues", icon: LayoutDashboard },
+  { href: "/dashboard/chat", label: "Rule Check", icon: MessageSquare },
+  { href: "/dashboard/diff", label: "Rule Diff", icon: GitCompare },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
 
-  function isActive(href: string, exact?: boolean) {
-    return exact ? pathname === href : pathname.startsWith(href);
+  function isActive(href: string) {
+    if (href === "/dashboard") return pathname === href;
+    return pathname === href || pathname.startsWith(href + "/");
+  }
+
+  function NavItem({ href, label, icon: Icon }: { href: string; label: string; icon: React.ComponentType<{ size?: number }> }) {
+    return (
+      <Link
+        href={href}
+        className={cn(
+          "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+          isActive(href)
+            ? "bg-brand-50 text-brand-700"
+            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+        )}
+      >
+        <Icon size={18} />
+        {label}
+      </Link>
+    );
+  }
+
+  function SectionLabel({ label }: { label: string }) {
+    return (
+      <div className="pt-5 pb-1">
+        <p className="text-xs text-slate-400 uppercase tracking-wider font-medium px-3">{label}</p>
+      </div>
+    );
   }
 
   return (
@@ -38,41 +84,33 @@ export function Sidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 p-4 space-y-1">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-              isActive(item.href, item.exact)
-                ? "bg-brand-50 text-brand-700"
-                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-            )}
-          >
-            <item.icon size={18} />
-            {item.label}
-          </Link>
+      <nav className="flex-1 p-4 space-y-0.5 overflow-y-auto">
+        <Link
+          href="/dashboard"
+          className={cn(
+            "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+            pathname === "/dashboard"
+              ? "bg-brand-50 text-brand-700"
+              : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+          )}
+        >
+          <LayoutDashboard size={18} />
+          Dashboard
+        </Link>
+
+        <SectionLabel label="Planning" />
+        {planningItems.map((item) => (
+          <NavItem key={item.href} {...item} />
         ))}
 
-        <div className="pt-4 pb-1">
-          <p className="text-xs text-slate-400 uppercase tracking-wider font-medium px-3">Coaching</p>
-        </div>
+        <SectionLabel label="Team" />
+        {teamItems.map((item) => (
+          <NavItem key={item.href} {...item} />
+        ))}
 
-        {coachingItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-              isActive(item.href)
-                ? "bg-brand-50 text-brand-700"
-                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-            )}
-          >
-            <item.icon size={18} />
-            {item.label}
-          </Link>
+        <SectionLabel label="Resources" />
+        {resourceItems.map((item) => (
+          <NavItem key={item.href} {...item} />
         ))}
       </nav>
 

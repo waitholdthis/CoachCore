@@ -312,3 +312,150 @@ export interface GamePlan {
   created_at: string;
   updated_at: string;
 }
+
+// ── Drills ────────────────────────────────────────────────────────────────────
+export interface Drill {
+  id: string;
+  title: string;
+  sport: string;
+  skill_focus: string;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  duration_minutes: number;
+  player_count_min: number | null;
+  player_count_max: number | null;
+  description: string;
+  setup: string | null;
+  instructions: string[];
+  coaching_points: string[];
+  progressions: string[];
+  equipment: string[];
+  tags: string[];
+  age_brackets: string[];
+  is_featured: boolean;
+  created_at: string;
+}
+
+export interface PracticeTemplate {
+  id: string;
+  title: string;
+  sport: string;
+  age_bracket: string;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  duration_minutes: number;
+  player_count_min: number | null;
+  player_count_max: number | null;
+  description: string;
+  overview: string | null;
+  phases: unknown[];
+  equipment_list: string[];
+  tags: string[];
+  is_featured: boolean;
+  created_at: string;
+}
+
+// ── Calendar ──────────────────────────────────────────────────────────────────
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  event_type: string;
+  start_time: string;
+  end_time: string | null;
+  location: string | null;
+  sport: string | null;
+  age_bracket: string | null;
+  team_name: string | null;
+  notes: string | null;
+  linked_plan_id: string | null;
+  is_completed: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+// ── Seasons ───────────────────────────────────────────────────────────────────
+export interface Season {
+  id: string;
+  title: string;
+  sport: string;
+  age_bracket: string;
+  start_date: string;
+  end_date: string;
+  total_weeks: number;
+  description: string | null;
+  goals: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SeasonWeek {
+  id: string;
+  season_id: string;
+  week_number: number;
+  theme: string | null;
+  focus_skills: string[];
+  linked_plan_id: string | null;
+  notes: string | null;
+  updated_at: string;
+}
+
+// ── Roster ────────────────────────────────────────────────────────────────────
+export interface Player {
+  id: string;
+  first_name: string;
+  last_name: string;
+  number: number | null;
+  position: string | null;
+  age: number | null;
+  sport: string | null;
+  notes: string | null;
+  emergency_contact: string | null;
+  medical_notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RosterTeam {
+  id: string;
+  name: string;
+  sport: string;
+  age_bracket: string;
+  season_label: string | null;
+  head_coach: string | null;
+  created_at: string;
+  updated_at: string;
+  players?: Player[];
+}
+
+export interface PerformanceRecord {
+  id: string;
+  player_id: string;
+  recorded_at: string;
+  sport: string | null;
+  metric_type: string;
+  value: number;
+  unit: string | null;
+  context: string | null;
+  notes: string | null;
+  created_at: string;
+}
+
+// ── Resources ─────────────────────────────────────────────────────────────────
+export interface Resource {
+  id: string;
+  title: string;
+  body: string;
+  resource_type: string;
+  sport: string | null;
+  tags: string[];
+  is_featured: boolean;
+  read_time_minutes: number | null;
+  created_at: string;
+}
+
+export interface SavedItem {
+  id: string;
+  item_type: string;
+  item_id: string;
+  title: string;
+  notes: string | null;
+  created_at: string;
+}
