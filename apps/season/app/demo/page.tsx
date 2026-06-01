@@ -160,6 +160,17 @@ export default function DemoPage() {
           </section>
         </div>
       </section>
+
+      <footer className="border-t border-slate-200 bg-white px-5 py-8 sm:px-8 lg:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <p>Demo data is fictional and designed for product preview.</p>
+          <div className="flex flex-wrap gap-4">
+            <Link href="/privacy" className="font-bold hover:text-slate-950">Privacy</Link>
+            <Link href="/terms" className="font-bold hover:text-slate-950">Terms</Link>
+            <Link href="/register" className="font-bold hover:text-slate-950">Create team</Link>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

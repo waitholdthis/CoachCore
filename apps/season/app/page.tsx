@@ -223,7 +223,7 @@ export default function LandingPage() {
           <div className="rounded-[1.5rem] border border-white/10 bg-white/8 p-5">
             <p className="mb-4 text-sm font-black uppercase tracking-wide text-white/60">Next build targets</p>
             <div className="space-y-3">
-              {["Seeded demo team", "Privacy and terms", "Email/password recovery", "Production deployment", "Tootie Designs case study"].map((item, index) => (
+              {["Privacy and terms", "Seeded demo team", "Email/password recovery", "Production deployment", "Tootie Designs case study"].map((item, index) => (
                 <div key={item} className="flex items-center gap-3 rounded-2xl bg-white/8 p-3">
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-500 text-xs font-black">{index + 1}</span>
                   <span className="text-sm font-semibold text-slate-200">{item}</span>
@@ -236,6 +236,17 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <footer className="border-t border-slate-800 bg-slate-950 px-5 py-8 text-white sm:px-8 lg:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} The Season. Built for calmer youth sports coordination.</p>
+          <div className="flex flex-wrap gap-4">
+            <Link href="/privacy" className="font-semibold hover:text-white">Privacy</Link>
+            <Link href="/terms" className="font-semibold hover:text-white">Terms</Link>
+            <Link href="/demo" className="font-semibold hover:text-white">Demo</Link>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
