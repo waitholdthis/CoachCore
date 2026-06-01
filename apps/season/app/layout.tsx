@@ -3,8 +3,15 @@ import "./globals.css";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
-  title: "The Season",
-  description: "Youth sports team communication",
+  title: "The Season | Youth Sports Team Communication",
+  description:
+    "A calm command center for volunteer coaches and parents: team messages, schedules, RSVPs, files, and season coordination.",
+  openGraph: {
+    title: "The Season",
+    description:
+      "One calm command center for the chaos of youth sports season.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
