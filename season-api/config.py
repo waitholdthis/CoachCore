@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     season_database_url_sync: str = "postgresql://season:season@localhost:5432/the_season"
     season_jwt_secret: str = "dev-season-secret-change-in-prod"
     season_jwt_expire_minutes: int = 10080  # 7 days
+    season_demo_enabled: bool = False
+    season_demo_email: str = "demo-coach@theseason.local"
     minio_endpoint: str = "localhost:9000"
     minio_access_key: str = "minioadmin"
     minio_secret_key: str = "minioadmin"

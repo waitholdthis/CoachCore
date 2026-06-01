@@ -73,6 +73,31 @@ async def login(
     return TokenResponse(user=UserRead.model_validate(user), access_token=token)
 
 
+@router.post("/demo", response_model=TokenResponse)
+async def demo_login(
+    db: AsyncSession = Depends(get_db),
+    settings: Settings = Depends(get_settings),
+):
+    if settings.environment.lower() == "production" or not settings.season_demo_enabled:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Demo access is not enabled in this environment",
+        )
+
+    result = await db.execute(
+        select(User).where(User.email == settings.season_demo_email.lower())
+    )
+    user = result.scalar_one_or_none()
+    if not user or not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Demo account is not seeded. Run season-api/scripts/seed_demo.py first.",
+        )
+
+    token = create_access_token(user.id, settings)
+    return TokenResponse(user=UserRead.model_validate(user), access_token=token)
+
+
 @router.get("/me", response_model=UserRead)
 async def get_me(current_user: User = Depends(get_current_user)):
     return UserRead.model_validate(current_user)

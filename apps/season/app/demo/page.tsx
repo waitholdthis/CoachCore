@@ -44,7 +44,7 @@ export default function DemoPage() {
           </Link>
           <div className="flex items-center gap-2">
             <Link href="/login" className="hidden rounded-full px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-950 sm:inline-flex">Sign in</Link>
-            <Link href="/register" className="rounded-full bg-brand-500 px-4 py-2 text-sm font-black text-white shadow-lg shadow-brand-500/20 hover:bg-brand-600">Create team</Link>
+            <Link href="/demo/access" className="rounded-full bg-brand-500 px-4 py-2 text-sm font-black text-white shadow-lg shadow-brand-500/20 hover:bg-brand-600">Launch live demo</Link>
           </div>
         </div>
       </div>
@@ -165,6 +165,7 @@ export default function DemoPage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-4 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <p>Demo data is fictional and designed for product preview.</p>
           <div className="flex flex-wrap gap-4">
+            <Link href="/demo/access" className="font-bold text-brand-600 hover:text-brand-700">Launch live demo</Link>
             <Link href="/privacy" className="font-bold hover:text-slate-950">Privacy</Link>
             <Link href="/terms" className="font-bold hover:text-slate-950">Terms</Link>
             <Link href="/register" className="font-bold hover:text-slate-950">Create team</Link>

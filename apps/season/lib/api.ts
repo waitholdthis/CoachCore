@@ -43,6 +43,10 @@ export const authApi = {
     return client.post("/auth/login", data).then((r) => r.data);
   },
 
+  demoLogin(): Promise<TokenResponse> {
+    return client.post("/auth/demo").then((r) => r.data);
+  },
+
   me(): Promise<User> {
     return client.get("/auth/me").then((r) => r.data);
   },
@@ -72,7 +76,7 @@ export const teamsApi = {
   },
 
   myTeams(): Promise<TeamWithMeta[]> {
-    return client.get("/teams").then((r) => r.data);
+    return client.get("/teams/my").then((r) => r.data);
   },
 
   get(teamId: string): Promise<TeamWithMeta> {

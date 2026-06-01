@@ -101,12 +101,12 @@ export default function LandingPage() {
               The Season helps coaches and parent volunteers keep messages, schedules, RSVPs, team files, and family updates in one simple place.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link href="/demo" className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-500 px-6 py-4 text-base font-black text-white shadow-2xl shadow-brand-500/25 transition hover:-translate-y-1 hover:bg-brand-600">
-                View demo team
+              <Link href="/demo/access" className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-500 px-6 py-4 text-base font-black text-white shadow-2xl shadow-brand-500/25 transition hover:-translate-y-1 hover:bg-brand-600">
+                Launch live demo
                 <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
               </Link>
-              <Link href="/register" className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/8 px-6 py-4 text-base font-bold text-white backdrop-blur transition hover:-translate-y-1 hover:bg-white/14">
-                Create a team
+              <Link href="/demo" className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/8 px-6 py-4 text-base font-bold text-white backdrop-blur transition hover:-translate-y-1 hover:bg-white/14">
+                View preview
               </Link>
             </div>
             <p className="mt-4 text-sm text-slate-400">
@@ -223,15 +223,15 @@ export default function LandingPage() {
           <div className="rounded-[1.5rem] border border-white/10 bg-white/8 p-5">
             <p className="mb-4 text-sm font-black uppercase tracking-wide text-white/60">Next build targets</p>
             <div className="space-y-3">
-              {["Privacy and terms", "Seeded demo team", "Email/password recovery", "Production deployment", "Tootie Designs case study"].map((item, index) => (
+              {["Privacy and terms", "Seeded demo team", "One-click demo access", "Email/password recovery", "Production deployment", "Tootie Designs case study"].map((item, index) => (
                 <div key={item} className="flex items-center gap-3 rounded-2xl bg-white/8 p-3">
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-500 text-xs font-black">{index + 1}</span>
                   <span className="text-sm font-semibold text-slate-200">{item}</span>
                 </div>
               ))}
             </div>
-            <Link href="/demo" className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-5 py-4 text-sm font-black text-slate-950 transition hover:bg-brand-50">
-              Open the product demo <ArrowRight className="h-4 w-4" />
+            <Link href="/demo/access" className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-5 py-4 text-sm font-black text-slate-950 transition hover:bg-brand-50">
+              Launch live demo <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
@@ -241,6 +241,7 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-4 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} The Season. Built for calmer youth sports coordination.</p>
           <div className="flex flex-wrap gap-4">
+            <Link href="/demo/access" className="font-semibold text-brand-200 hover:text-white">Live demo</Link>
             <Link href="/privacy" className="font-semibold hover:text-white">Privacy</Link>
             <Link href="/terms" className="font-semibold hover:text-white">Terms</Link>
             <Link href="/demo" className="font-semibold hover:text-white">Demo</Link>

@@ -78,6 +78,16 @@ cd season-api
 SEASON_DEMO_PASSWORD="change-this-local-demo-password" python3 scripts/seed_demo.py
 ```
 
+Enable the one-click demo route only in local/staging:
+
+```bash
+SEASON_DEMO_ENABLED=true
+SEASON_DEMO_EMAIL=demo-coach@theseason.local
+ENVIRONMENT=staging
+```
+
+Then open `/demo/access` from the web app. The route requests a guarded demo token, selects the seeded Falcons U10 team, and redirects into the authenticated app. It stays disabled when `ENVIRONMENT=production` or `SEASON_DEMO_ENABLED` is false.
+
 The seed creates:
 
 - Demo coach account: `demo-coach@theseason.local`
